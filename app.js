@@ -24,7 +24,7 @@ io.on('connection', (socket)=>{
         });
         socket.emit('login-msg',{// io.emit will sends the data to all the sockets that are connected at that time;    
             data:{
-                msg:`${user[socket.id].username} joined the room `,
+                msg:`${user[socket.id].username} joined the room. `,
                 name:user[socket.id].username,
                 room:room,
                 connected:connected
