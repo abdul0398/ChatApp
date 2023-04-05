@@ -40,7 +40,6 @@ $('#btn-login').click(()=>{
     $("#chat-box").addClass("d-flex");
 })
 socket.on('dissconnected-msg', data =>{
-    console.log(data);
     const arr = data.connected;
     $('#chat').append(`<li class="p-2 ms-0 mb-2 text-white"><span class="fw-bold">${data.name} left the room </span><span></span></li>`)
     $("#activeUsers").empty();
