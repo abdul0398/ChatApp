@@ -21,10 +21,8 @@ $('#btn-login').click(()=>{
         const arr = data.data.connected;
         $("#activeUsers").empty();
         for (const user of arr) {
-            $("#activeUsers").append(`<li class="p-2 ms-0 mb-2"><span class="fw-bold">${user.username} </span><span></span></li>`);    
+            $("#activeUsers").append(`<li class="p-2 ms-0 mb-2"><span class="fw-bold">${user.username}</span><span></span></li>`);    
         }
-        
-        
     })
     socket.on('received_message', data =>{
         $('#chat').append(`<li class="p-2 ms-0 mb-2"><span class="fw-bold">${data.name}: ${data.msg} </span><span></span></li>`)
@@ -33,3 +31,12 @@ $('#btn-login').click(()=>{
     $("#chat-box").show();
     $("#chat-box").addClass("d-flex");
 })
+socket.on('dissconnected-msg', data =>{
+    console.log(data);
+    const arr = data.connected;
+    $('#chat').append(`<li class="p-2 ms-0 mb-2"><span class="fw-bold">${data.name} left the room </span><span></span></li>`)
+    $("#activeUsers").empty();
+    for (const user of arr) {
+        $("#activeUsers").append(`<li class="p-2 ms-0 mb-2"><span class="fw-bold">${user.username}</span><span></span></li>`);    
+    }
+  });

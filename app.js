@@ -7,7 +7,7 @@ const socketio = require('socket.io');// requiring socket.io
 const io = socketio(server);// imbedding socket into http server;
 app.use('/', express.static(path.join(__dirname, 'public')));
 const user = {};
-connectedUsers = [];
+let connectedUsers = [];
 io.on('connection', (socket)=>{
     socket.on('login',async (data)=>{
         const{username, room} = data;
@@ -43,9 +43,20 @@ io.on('connection', (socket)=>{
             name:name
         })
     })
+    socket.on("disconnect", (reason) => {
+        if(!user[socket.id]){
+            return;
+        }
+        const connected = connectedUsers.filter(user => user.socket !== socket.id);
+        connectedUsers = connected;
+        const currRoom = user[socket.id].room;
+        console.log(user[socket.id]);
+        socket.to(currRoom).emit('dissconnected-msg',{// io.emit will sends the data to all the sockets that are connected at that time;
+            connected:connected,
+            name:user[socket.id].username
+        });
+      });
 });
-
-
 server.listen(3000, ()=>{
     console.log(`server started at port 3000`);
 })
